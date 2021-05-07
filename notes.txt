@@ -1,0 +1,32 @@
+------ AB INITIO FOR ANYTHIN -------
+
+cargo new projectname
+git init
+git add .
+git commit -m 'to change branch name'
+git branch -m main
+git push
+git remote add origin https://github.com/PrisionMike/mypki.git
+git push -u origin main
+
+--------------xxxxxxx--------------
+
+
+------ PROJECT NOTES -----------------
+
+1. Generate a key pair using openssl
+    a. openssl genrsa -out private.pem 2048
+
+2. The "key pair" generated above is what is per standards, called
+as "private key". It has the public key parts as well as some
+preperformed computations to speed up decryption (using something
+called a "Chinese Remainder Theorem")
+
+3. The 'keys' are number pairs. Here in too. (n,e) is the public
+key; (n,d) is the private key.
+
+4. e is for some reason not randomised. It is often a specific well
+known constant (65537) or is often among a few well known constants.
+
+5. So the modus operandi is to command a 'private key' (has pub key
+info within it too) then draw out the public key from it and publish it.
