@@ -17,6 +17,14 @@ git push -u origin main
 1. Generate a key pair using openssl
     a. openssl genrsa -out private.pem 2048
 
+2. Draw the public key from the private one.
+    openssl rsa -in private.pem -out public.pem -outform PEM -pubout
+
+3. Encrypting a file:
+    openssl rsautl -encrypt -inkey public.pem -pubin -in file.txt -out file.ssl
+
+4. openssl rsautl -decrypt -inkey private.pem -in file.ssl decrypted.txt
+
 2. The "key pair" generated above is what is per standards, called
 as "private key". It has the public key parts as well as some
 preperformed computations to speed up decryption (using something
