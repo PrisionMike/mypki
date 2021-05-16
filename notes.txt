@@ -38,3 +38,21 @@ known constant (65537) or is often among a few well known constants.
 
 5. So the modus operandi is to command a 'private key' (has pub key
 info within it too) then draw out the public key from it and publish it.
+
+Openstack is the open source alternative to proprietary cloud stacks.
+You can install it on your system and it will provide you a proper cloud stack
+like Azure where you can run lots of services on it.
+
+It runs on a base OS and a virtualization system. KVM is the default virtualization
+it supports.
+
+KVM is Linux's virtualization support. It turns the Linux kernel itself
+into a hypervisor. It is sort of in the middle of the 2 types of virtualization.
+Technically it's II but it works like a I.
+
+Also given the primary use case may be systems like Bitcoin where you don't
+have to be responsible to even claim to know the key holder, your focus
+should not even be on the 'server' side on things.
+
+FOCUS ON SIGNING. We're trying to build ledgers here. Just focus on signing.
+Not even verification.
