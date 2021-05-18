@@ -56,3 +56,9 @@ should not even be on the 'server' side on things.
 
 FOCUS ON SIGNING. We're trying to build ledgers here. Just focus on signing.
 Not even verification.
+
+As per the plan I was supposed to work on file sharing using Rust now,
+so that's what I am gonna do.
+
+SFTP and FTPS are secure file transfer methods but I am gonna go with
+simple HTTPS to send files around.
