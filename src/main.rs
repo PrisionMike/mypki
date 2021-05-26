@@ -1,8 +1,11 @@
-use ramp::int::Int;
-use ramp::int::RandomInt;
-// use ramp::RandomInt;
-use rand::rngs::OsRng;
+// use ramp::int::Int;
+// use ramp::int::RandomInt;
+use ramp::RandomInt;
+// use rand::rngs::OsRng;
 use rand;
+
+extern crate rand;
+extern crate ramp;
 
 fn main() {
     // let gma = Int::from(587454);
