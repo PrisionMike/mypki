@@ -1,0 +1,2 @@
+Randomly set one of the 10 most significant bits as 1
+instead of forcing the MSB always. Will enhance progress.
