@@ -8,6 +8,8 @@ fn main() {
     
     let mut k = 0;      // Count the number of times the loop is run.
     loop {
+
+        k += 1;
         let mut gma: Int = rng.gen_uint(2048);
 
         // instead of forcing the MSB to be 1, I am forcing any of
@@ -19,7 +21,7 @@ fn main() {
         gma.set_bit((2047-topcap) as u32,true);     // Lower bound on prime numbers
 
         if prime_eh(&gma) {
-            println!("The prime is:\n{}",&gma);
+            println!("The prime is:\n{}\n\nfound at the {}th attempt",&gma,k);
             break;
         }
     }
