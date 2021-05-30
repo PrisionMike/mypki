@@ -3,6 +3,8 @@ use ramp::RandomInt;
 use rand::prelude::*;
 use mypki::SMALL_PRIMES;
 
+// static mut rng: ThreadRng = thread_rng();
+
 fn main() {
 
     let mut rng = thread_rng();
@@ -21,10 +23,11 @@ fn main() {
         gma.set_bit(0,true);    // Only odd numbers
         gma.set_bit((2047-topcap) as u32,true);     // Lower bound on prime numbers
 
-        if prime_eh(&gma) {
-            println!("The prime is:\n{}\n\nfound at the {}th attempt",&gma,k);
-            println!("Forced the {}th fucker to be high",2048-topcap);
-            // println!("List of small primes:\n{:?}",SMALL_PRIMES);
+        // println!("Candi no. {}:\n{}",&k,&gma);
+
+        if prime_eh( &gma ) {
+            println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
+            // println!("IT'S A PRIME!!");
             break;
         }
     }
@@ -40,23 +43,29 @@ fn prime_eh(n: &Int) -> bool {
     // } else { false }
 
     for p in SMALL_PRIMES.iter() {
+
+        // println!("testing with {}",p);
         if n % Int::from(*p) == 0 { return false }
-        // println!("testing with {}", p);
     }
-    // true
 
     if !fermat_little(&n) {
         return false
     } else {
-        miller_rabin(&n)
+        miller_rabin(&n);
     }
 
     true
 }
 
 fn fermat_little(n: &Int) -> bool {
-    let mut rng = thread_rng();
+
+    // let mut rng = thread_rng();
     let somea: Int = rng.gen_uint_below(n);
     let res = somea.pow_mod( &(n - Int::one()) , n );
+    // println!("Doing a little fermat number here:\nTried with {}\nleft a residue {}", somea, res);
     res == Int::one()
+}
+
+fn miller_rabin( _n : &Int ) -> bool {
+    true
 }
