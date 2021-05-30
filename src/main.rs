@@ -23,8 +23,8 @@ fn main() {
 
         if prime_eh(&gma) {
             println!("The prime is:\n{}\n\nfound at the {}th attempt",&gma,k);
-            println!("forced the {}th fucker to be high",2048-topcap);
-            println!("List of small primes:\n{:?}",SMALL_PRIMES);
+            println!("Forced the {}th fucker to be high",2048-topcap);
+            // println!("List of small primes:\n{:?}",SMALL_PRIMES);
             break;
         }
     }
@@ -41,7 +41,22 @@ fn prime_eh(n: &Int) -> bool {
 
     for p in SMALL_PRIMES.iter() {
         if n % Int::from(*p) == 0 { return false }
-        println!("testing with {}", p);
+        // println!("testing with {}", p);
     }
+    // true
+
+    if !fermat_little(&n) {
+        return false
+    } else {
+        miller_rabin(&n)
+    }
+
     true
+}
+
+fn fermat_little(n: &Int) -> bool {
+    let mut rng = thread_rng();
+    let somea: Int = rng.gen_uint_below(n);
+    let res = somea.pow_mod( &(n - Int::one()) , n );
+    res == Int::one()
 }

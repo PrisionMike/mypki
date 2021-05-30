@@ -1,0 +1,4 @@
+What if I borrow a value in a function, but move it to
+another function inside the function.
+    === Since you are passing the var you borrowed, when you
+    transfer it, it is being borrowed. Not owned.
