@@ -64,3 +64,11 @@ SFTP and FTPS are secure file transfer methods but I am gonna go with
 simple HTTPS to send files around.
 
 Now let's create an effin file named JSI.txt and our immediate target would be to sign it.
+
+20X TO 30X speed improvement when running in release mode.
+
+CURRENT MISSION: The program should generate a key pair (unencoded in any format)
+and save the pubkey and pvkey in separate directories.
+OR
+It will become a lib which will return the pub key and save the pv key
+in a stated directory. Unsecured. Unencrypted.
