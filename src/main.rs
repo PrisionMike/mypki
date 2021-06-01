@@ -4,8 +4,6 @@ use rand::prelude::*;
 use mypki::SMALL_PRIMES;
 // use std::time::{Duration, Instant};
 
-// static mut rng: ThreadRng = thread_rng();
-
 fn main() {
 
     let mut rng = thread_rng();
@@ -34,6 +32,8 @@ fn main() {
     }
     
     // println!("{}{}",gma, prime_eh(&gma));
+
+    // miller_rabin(&Int::from(69),&0);
 }
 
 fn prime_eh(n: &Int) -> bool {
@@ -75,7 +75,57 @@ fn fermat_little(n: &Int) -> bool {
     res == Int::one()
 }
 
-fn miller_rabin( _n : &Int , _mr_rounds : &u8) -> bool {
+fn miller_rabin( n : &Int , mr_rounds : &u8) -> bool {
+    let one = &Int::one();
+    let two = &Int::from(2);
+    // println!("One is {} and two is {}", one, two);
+
+    let mut nminone : Int = n - one;
+
+    let mut s : u16 = 0;
+    while nminone.is_even() {
+
+        s = s + 1;
+
+        nminone = nminone.divmod(two).0;
+
+    }
+
+    let d = nminone;
+
+    // d = &d + one;
+    // d = &d - one;       // Just to check if d is mutable or not.
+
+    let mut rng = thread_rng();
+
+    for _i in 1..*mr_rounds {
+
+        let base : Int = rng.gen_uint_below( &(n - 4) ) + two;
+
+        let mut x = base.pow_mod(&d,n);
+
+        if x == *one || x == n - one {
+            continue;
+        }
+
+        let mut flag: bool = false;
+        for _j in 1..s-1 {
+            x = x.pow_mod( two, n );
+            if x == n - one {
+                flag = true;
+                break;
+            }
+        }
+
+        if flag {
+            continue;
+        } else {
+            return false
+        }
+
+    }
+    // println!("s,d are: {},{}",s,d);
+
     true
 }
 
