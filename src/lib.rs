@@ -1,12 +1,18 @@
-
+use std::time::Duration;
 pub struct Reply {
-    boo_result : bool
+    boo_result : bool,
+    pub timings : Vec<Duration>
 }
 
 impl Reply {
 
     pub fn new( boores : bool) -> Reply {
-        Reply{boo_result : boores}
+        
+        Reply{
+            boo_result : boores,
+            timings : Vec::new()
+        }
+
     }
 
     pub fn get_res(&self) -> bool {
@@ -17,6 +23,11 @@ impl Reply {
         self.boo_result = val;
     }
 
+    pub fn push_that_time( &mut self, time_length : &Duration) {
+
+        self.timings.push(*time_length);
+
+    }
 
 }
 

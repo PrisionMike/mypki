@@ -6,18 +6,19 @@ use std::time::{Duration, Instant};
 
 fn main() {
 
-    let mut rng = thread_rng();
+    // let tic: Instant = Instant::now();
     
-    let mut k = 0;      // Count the number of times the loop is run.
+    let mut rng = thread_rng();
+
+    // let toc: Duration = tic.elapsed();
+    
+    let mut k : u16 = 0;      // Count the number of times the loop is run.
     loop {
 
         k += 1;
 
-        let tic: Instant = Instant::now();
-
         let mut gma: Int = rng.gen_uint(2048);
 
-        let toc: Duration = tic.elapsed();
 
         // Instead of forcing the MSB to be 1, I am forcing any of
         // the top 8 MSBs to be 1 thereby increasing the range of
@@ -27,15 +28,16 @@ fn main() {
         gma.set_bit(0,true);    // Only odd numbers
         gma.set_bit((2047-topcap) as u32,true);     // Lower bound on prime numbers
 
-        // println!("Candi no. {}:\n{}",&k,&gma);
-
         let result = prime_eh( &gma );
 
         if result.get_res() {
 
             println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
 
-            // println!("It takes about {:?} to thread out an rng",toc);
+            println!("It takes about...\n{:?} to run the primitive primality test,\n{:?} for the Fermat Little test,\n{:?} for the Miller Rabbin test",
+                        result.timings[0],
+                    result.timings[1],
+                result.timings[2]);
 
             break;
         }
@@ -45,43 +47,47 @@ fn main() {
 
 fn prime_eh(n: &Int) -> Reply {
     
-    let mr_rounds : u8 = 16;
+    let mr_rounds : u8 = 16;        // MILLER RABBIN ROUNDS
 
-    let mut out = Reply::new(false);
+    let mut output = Reply::new(false);
 
-    // if !primitive_primality_test(n) {
-    //     return false
-    // } else
-
-    // if !fermat_little(&n) {
-    //     return false
-    // } else
-
-    // if !miller_rabin(&n, &mr_rounds) {
-    //     return false
-    // }
+    let tic: Instant = Instant::now();
 
     let t1: bool = primitive_primality_test(n).get_res();
 
+    let toc: Duration = tic.elapsed();
+
     if !t1 {
         // out.set_res(false)
-        return out;
+        return output;
     }
+
+    let tic2: Instant = Instant::now();
 
     let t2: bool = fermat_little(n).get_res();
 
+    let toc2: Duration = tic2.elapsed();
+
     if !t2 {
-        return out;
+        return output;
     }
+
+    let tic3: Instant = Instant::now();
 
     let t3: bool = miller_rabin( n, &mr_rounds ).get_res();
 
+    let toc3: Duration = tic3.elapsed();
+
     if !t3 {
-        return out;
+        return output;
     }
 
-    out.set_res(true);
-    out
+    output.set_res(true);
+    output.push_that_time(&toc);
+    output.push_that_time(&toc2);
+    output.push_that_time(&toc3);
+
+    output
 }
 
 fn fermat_little(n: &Int) -> Reply {
