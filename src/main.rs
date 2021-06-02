@@ -2,7 +2,7 @@ use ramp::Int;
 use ramp::RandomInt;
 use rand::prelude::*;
 use mypki::*;
-use std::time::{Duration, Instant};
+// use std::time::{Duration, Instant};
 
 fn main() {
 
@@ -13,11 +13,11 @@ fn main() {
 
         k += 1;
 
-        let tic: Instant = Instant::now();
+        // let tic: Instant = Instant::now();
 
         let mut gma: Int = rng.gen_uint(2048);
 
-        let toc: Duration = tic.elapsed();
+        // let toc: Duration = tic.elapsed();
 
         // Instead of forcing the MSB to be 1, I am forcing any of
         // the top 8 MSBs to be 1 thereby increasing the range of
@@ -33,7 +33,7 @@ fn main() {
 
             println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
 
-            println!("It takes about {:?} to thread out an rng",toc);
+            // println!("It takes about {:?} to thread out an rng",toc);
 
             break;
         }
@@ -44,9 +44,11 @@ fn main() {
     // miller_rabin(&Int::from(69),&0);
 }
 
-fn prime_eh(n: &Int) -> bool {
+fn prime_eh(n: &Int) -> Reply {
     
     let mr_rounds : u8 = 16;
+
+    let mut out = Reply{ boo_result: false };
 
     // if !primitive_primality_test(n) {
     //     return false
@@ -60,16 +62,17 @@ fn prime_eh(n: &Int) -> bool {
     //     return false
     // }
 
-    let t1: bool = primitive_primality_test(n);
+    let t1: bool = primitive_primality_test(n).get_res();
 
     if !t1 {
-        return false;
+        // out.set_res(false)
+        return out;
     }
 
     let t2: bool = fermat_little(n);
 
     if !t2 {
-        return false;
+        return Reply{ boo_result: false };
     }
 
     let t3: bool = miller_rabin( n, &mr_rounds );
@@ -78,7 +81,7 @@ fn prime_eh(n: &Int) -> bool {
         return false;
     }
 
-    true
+    out
 }
 
 fn fermat_little(n: &Int) -> bool {

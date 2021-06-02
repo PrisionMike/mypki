@@ -49,8 +49,12 @@ impl Reply {
         Reply{boo_result : boores}
     }
 
-    pub fn result(&self) -> bool {
+    pub fn get_res(&self) -> bool {
         return self.boo_result;
+    }
+
+    pub fn set_res( &mut self, val : bool ) {
+        self.boo_result = val;
     }
 
 
