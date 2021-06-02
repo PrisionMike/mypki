@@ -2,7 +2,7 @@ use ramp::Int;
 use ramp::RandomInt;
 use rand::prelude::*;
 use mypki::*;
-// use std::time::{Duration, Instant};
+use std::time::{Duration, Instant};
 
 fn main() {
 
@@ -13,11 +13,11 @@ fn main() {
 
         k += 1;
 
-        // let tic: Instant = Instant::now();
+        let tic: Instant = Instant::now();
 
         let mut gma: Int = rng.gen_uint(2048);
 
-        // let toc: Duration = tic.elapsed();
+        let toc: Duration = tic.elapsed();
 
         // Instead of forcing the MSB to be 1, I am forcing any of
         // the top 8 MSBs to be 1 thereby increasing the range of
@@ -29,7 +29,9 @@ fn main() {
 
         // println!("Candi no. {}:\n{}",&k,&gma);
 
-        if prime_eh( &gma ) {
+        let result = prime_eh( &gma );
+
+        if result.get_res() {
 
             println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
 
@@ -38,17 +40,14 @@ fn main() {
             break;
         }
     }
-    
-    // println!("{}{}",gma, prime_eh(&gma));
 
-    // miller_rabin(&Int::from(69),&0);
 }
 
 fn prime_eh(n: &Int) -> Reply {
     
     let mr_rounds : u8 = 16;
 
-    let mut out = Reply{ boo_result: false };
+    let mut out = Reply::new(false);
 
     // if !primitive_primality_test(n) {
     //     return false
@@ -69,45 +68,43 @@ fn prime_eh(n: &Int) -> Reply {
         return out;
     }
 
-    let t2: bool = fermat_little(n);
+    let t2: bool = fermat_little(n).get_res();
 
     if !t2 {
-        return Reply{ boo_result: false };
+        return out;
     }
 
-    let t3: bool = miller_rabin( n, &mr_rounds );
+    let t3: bool = miller_rabin( n, &mr_rounds ).get_res();
 
     if !t3 {
-        return false;
+        return out;
     }
 
+    out.set_res(true);
     out
 }
 
-fn fermat_little(n: &Int) -> bool {
+fn fermat_little(n: &Int) -> Reply {
 
-    let mut rng = thread_rng();
+    let mut output = Reply::new(false);
+
+    let mut rng: ThreadRng = thread_rng();
 
     let somea: Int = rng.gen_uint_below(n);
-
-    // let called = Instant::now();
     
     let res = somea.pow_mod( &(n - Int::one()) , n );
-
-    // let did_the_powmod = called.elapsed();
-
-    // println!("Doing a little fermat number here:\nTried with {}\nleft a residue {}", somea, res);
-
-    // println!("Took {:?} to generate a rand brat.\n{:?} to do the pow mod",brought_the_rand,did_the_powmod);
-    // println!("Powmod took: {:?}",did_the_powmod);
     
-    res == Int::one()
+    output.set_res(res == Int::one());
+
+    output
 }
 
-fn miller_rabin( n : &Int , mr_rounds : &u8) -> bool {
-    let one = &Int::one();
-    let two = &Int::from(2);
-    // println!("One is {} and two is {}", one, two);
+fn miller_rabin( n : &Int , mr_rounds : &u8) -> Reply {
+    
+    let mut output = Reply::new(false);
+    
+    let one: &Int = &Int::one();
+    let two: &Int = &Int::from(2);
 
     let mut nminone : Int = n - one;
 
@@ -120,18 +117,15 @@ fn miller_rabin( n : &Int , mr_rounds : &u8) -> bool {
 
     }
 
-    let d = nminone;
+    let d: Int = nminone;
 
-    // d = &d + one;
-    // d = &d - one;       // Just to check if d is mutable or not.
-
-    let mut rng = thread_rng();
+    let mut rng: ThreadRng = thread_rng();
 
     for _i in 1..*mr_rounds {
 
         let base : Int = rng.gen_uint_below( &(n - 4) ) + two;
 
-        let mut x = base.pow_mod(&d,n);
+        let mut x: Int = base.pow_mod(&d,n);
 
         if x == *one || x == n - one {
             continue;
@@ -149,21 +143,26 @@ fn miller_rabin( n : &Int , mr_rounds : &u8) -> bool {
         if flag {
             continue;
         } else {
-            return false
+            return output
         }
 
     }
-    // println!("s,d are: {},{}",s,d);
 
-    true
+    output.set_res(true);
+    output
 }
 
-fn primitive_primality_test (n : &Int) -> bool {
+fn primitive_primality_test (n : &Int) -> Reply {
+
+    let mut output : Reply = Reply::new(false);
     for p in SMALL_PRIMES.iter() {
 
         // println!("testing with {}",p);
-        if n % Int::from(*p) == 0 { return false }
+        if n % Int::from(*p) == 0 { return output }
 
     }
-    true
+    
+    output.set_res(true);
+
+    output
 }

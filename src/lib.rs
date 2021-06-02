@@ -1,4 +1,26 @@
 
+pub struct Reply {
+    boo_result : bool
+}
+
+impl Reply {
+
+    pub fn new( boores : bool) -> Reply {
+        Reply{boo_result : boores}
+    }
+
+    pub fn get_res(&self) -> bool {
+        return self.boo_result;
+    }
+
+    pub fn set_res( &mut self, val : bool ) {
+        self.boo_result = val;
+    }
+
+
+}
+
+
 // List of first 249 odd primes
 pub static SMALL_PRIMES: [u16; 249] = [3,5,7,11,13,17,19,23,29,31,37,
                                     41,43,47,53,59,61,67,71,73,79,
@@ -37,25 +59,3 @@ pub static SMALL_PRIMES: [u16; 249] = [3,5,7,11,13,17,19,23,29,31,37,
                                     1489,1493,1499,1511,1523,1531,
                                     1543,1549,1553,1559,1567,1571,
                                     1579,1583];
-
-
-pub struct Reply {
-    boo_result : bool
-}
-
-impl Reply {
-
-    pub fn new( boores : bool) -> Reply {
-        Reply{boo_result : boores}
-    }
-
-    pub fn get_res(&self) -> bool {
-        return self.boo_result;
-    }
-
-    pub fn set_res( &mut self, val : bool ) {
-        self.boo_result = val;
-    }
-
-
-}
