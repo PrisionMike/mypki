@@ -1,8 +1,8 @@
 use ramp::Int;
 use ramp::RandomInt;
 use rand::prelude::*;
-use mypki::SMALL_PRIMES;
-// use std::time::{Duration, Instant};
+use mypki::*;
+use std::time::{Duration, Instant};
 
 fn main() {
 
@@ -12,9 +12,14 @@ fn main() {
     loop {
 
         k += 1;
+
+        let tic: Instant = Instant::now();
+
         let mut gma: Int = rng.gen_uint(2048);
 
-        // instead of forcing the MSB to be 1, I am forcing any of
+        let toc: Duration = tic.elapsed();
+
+        // Instead of forcing the MSB to be 1, I am forcing any of
         // the top 8 MSBs to be 1 thereby increasing the range of
         // possible primes without any practical compromise in security
         let topcap: u16 = rng.gen_range(0,10) as u16;
@@ -25,8 +30,11 @@ fn main() {
         // println!("Candi no. {}:\n{}",&k,&gma);
 
         if prime_eh( &gma ) {
+
             println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
-            // println!("IT'S A PRIME!!");
+
+            println!("It takes about {:?} to thread out an rng",toc);
+
             break;
         }
     }
@@ -38,18 +46,36 @@ fn main() {
 
 fn prime_eh(n: &Int) -> bool {
     
-    let mr_rounds : u8 = 10;
+    let mr_rounds : u8 = 16;
 
-    if !primitive_primality_test(n) {
-        return false
-    } else
+    // if !primitive_primality_test(n) {
+    //     return false
+    // } else
 
-    if !fermat_little(&n) {
-        return false
-    } else
+    // if !fermat_little(&n) {
+    //     return false
+    // } else
 
-    if !miller_rabin(&n, &mr_rounds) {
-        return false
+    // if !miller_rabin(&n, &mr_rounds) {
+    //     return false
+    // }
+
+    let t1: bool = primitive_primality_test(n);
+
+    if !t1 {
+        return false;
+    }
+
+    let t2: bool = fermat_little(n);
+
+    if !t2 {
+        return false;
+    }
+
+    let t3: bool = miller_rabin( n, &mr_rounds );
+
+    if !t3 {
+        return false;
     }
 
     true

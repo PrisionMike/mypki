@@ -72,3 +72,9 @@ and save the pubkey and pvkey in separate directories.
 OR
 It will become a lib which will return the pub key and save the pv key
 in a stated directory. Unsecured. Unencrypted.
+
+Thread RNG time: 17us (debug). 0.6us (release)
+
+So I am disabling (or uninstalling) the official Rust extension in favour of the
+unofficial but official rust-analyzer. That is supposed to be better supported
+and is in more active development than the off which may as wel be dead.

@@ -37,3 +37,21 @@ pub static SMALL_PRIMES: [u16; 249] = [3,5,7,11,13,17,19,23,29,31,37,
                                     1489,1493,1499,1511,1523,1531,
                                     1543,1549,1553,1559,1567,1571,
                                     1579,1583];
+
+
+pub struct Reply {
+    boo_result : bool
+}
+
+impl Reply {
+
+    pub fn new( boores : bool) -> Reply {
+        Reply{boo_result : boores}
+    }
+
+    pub fn result(&self) -> bool {
+        return self.boo_result;
+    }
+
+
+}
