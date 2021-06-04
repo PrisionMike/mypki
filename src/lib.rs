@@ -1,8 +1,29 @@
 use std::time::Duration;
+use std::u8;
+use ramp::Int;
+
+
+pub struct Query<'a> {
+    theint : &'a Int,
+    flagses : u8
+}
+
+impl<'a> Query<'a> {
+
+    pub fn new ( gma : &'a Int) -> Query<'a>{
+        Query {
+            theint : gma,
+            flagses : 1
+        }
+    }
+}
+
+
 pub struct Reply {
     boo_result : bool,
     pub timings : Vec<Duration>
 }
+
 
 impl Reply {
 
@@ -30,6 +51,11 @@ impl Reply {
     }
 
 }
+
+// pub enum control_word {
+    
+// }
+
 
 
 // List of first 249 odd primes

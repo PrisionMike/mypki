@@ -6,6 +6,8 @@ use std::time::{Duration, Instant};
 
 fn main() {
 
+
+    let TM : bool = true;
     // let tic: Instant = Instant::now();
     
     let mut rng = thread_rng();
