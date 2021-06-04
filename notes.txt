@@ -73,14 +73,14 @@ OR
 It will become a lib which will return the pub key and save the pv key
 in a stated directory. Unsecured. Unencrypted.
 
-2048 bit random 'Int' generation time: 17us (debug). 0.6us (release)
-Threading out an RNG: 1124us (debug). 500us (release)
-
 So I am disabling (or uninstalling) the official Rust extension in favour of the
 unofficial but official rust-analyzer. That is supposed to be better supported
 and is in more active development than the off which may as wel be dead.
 
-It takes about...  [RELEASE MODE]
-160µs to run the primitive primality test,
-14ms for the Fermat Little test,
-221ms for the Miller Rabbin test
+2048 bit random 'Int' generation time: 17us (debug). 0.6us (release)
+Threading out an RNG: 1124us (debug). 500us (release)
+
+It takes about...  [RELEASE MODE] | [DEBUG MODE]
+160µs | 1.7ms   to run the primitive primality test,
+14ms  | 600ms   for the Fermat Little test,
+221ms | 8.7s    for the Miller Rabbin test [16 ROUNDS]
