@@ -6,6 +6,18 @@ use ramp::Int;
 pub struct Query<'a> {
     theint : &'a Int,
     flagses : u8
+
+    /*
+    Flagses is going to be an 8 bit control word
+    which will contain all the commands encoded
+    in the 8 bit word.
+
+    0 = No Optimisation. No Telemetry
+    1 = No Optimisation. Telemetry.
+    2 = Optimisation. No Telemetry.
+    3 = Optimisation. Telemetry.
+    */
+
 }
 
 impl<'a> Query<'a> {
@@ -16,6 +28,8 @@ impl<'a> Query<'a> {
             flagses : 1
         }
     }
+
+
 }
 
 

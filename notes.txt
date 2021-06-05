@@ -84,3 +84,12 @@ It takes about...  [RELEASE MODE] | [DEBUG MODE]
 160µs | 1.7ms   to run the primitive primality test,
 14ms  | 600ms   for the Fermat Little test,
 221ms | 8.7s    for the Miller Rabbin test [16 ROUNDS]
+
+    Flagses is going to be an 8 bit control word
+    which will contain all the commands encoded
+    in the 8 bit word.
+
+    0 = No Optimisation. No Telemetry
+    1 = No Optimisation. Telemetry.
+    2 = Optimisation. No Telemetry.
+    3 = Optimisation. Telemetry.

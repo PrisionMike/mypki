@@ -3,11 +3,11 @@ use ramp::RandomInt;
 use rand::prelude::*;
 use mypki::*;
 use std::time::{Duration, Instant};
+// use std::mem;
 
 fn main() {
 
-
-    let TM : bool = true;
+    let tm : bool = true;
     // let tic: Instant = Instant::now();
     
     let mut rng = thread_rng();
@@ -40,6 +40,8 @@ fn main() {
                         result.timings[0],
                     result.timings[1],
                 result.timings[2]);
+            
+            // println!("\nThe Number takes {} space in memory",mem::size_of_val(gma));
 
             break;
         }
