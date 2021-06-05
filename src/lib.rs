@@ -2,6 +2,17 @@ use std::time::Duration;
 use std::u8;
 use ramp::Int;
 
+/*
+#[macro_export]
+macro_rules! time_it {
+    ( $func : stmt) => {
+        let tic = Instant::now();
+        $func
+        let toc = tic.elapsed();
+        toc
+    }
+}
+*/
 
 pub struct Query<'a> {
     theint : &'a Int,

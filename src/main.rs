@@ -21,10 +21,15 @@ fn main() {
 
         let mut gma: Int = rng.gen_uint(2048);
 
+        // let dur = time_it!(let mut gma: Int = rng.gen_uint(2048));
 
-        // Instead of forcing the MSB to be 1, I am forcing any of
-        // the top 8 MSBs to be 1 thereby increasing the range of
-        // possible primes without any practical compromise in security
+
+
+        /*
+        Instead of forcing the MSB to be 1, I am forcing any of
+        the top 8 MSBs to be 1 thereby increasing the range of
+        possible primes without any practical compromise in security
+        */
         let topcap: u16 = rng.gen_range(0,10) as u16;
 
         gma.set_bit(0,true);    // Only odd numbers
