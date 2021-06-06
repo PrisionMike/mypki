@@ -8,11 +8,8 @@ use std::time::{Duration, Instant};
 fn main() {
 
     let tm : bool = true;
-    // let tic: Instant = Instant::now();
     
     let mut rng = thread_rng();
-
-    // let toc: Duration = tic.elapsed();
     
     let mut k : u16 = 0;      // Count the number of times the loop is run.
     loop {
@@ -23,11 +20,9 @@ fn main() {
 
         // let dur = time_it!(let mut gma: Int = rng.gen_uint(2048));
 
-
-
         /*
         Instead of forcing the MSB to be 1, I am forcing any of
-        the top 8 MSBs to be 1 thereby increasing the range of
+        the top 10 MSBs to be 1 thereby increasing the range of
         possible primes without any practical compromise in security
         */
         let topcap: u16 = rng.gen_range(0,10) as u16;
@@ -35,18 +30,26 @@ fn main() {
         gma.set_bit(0,true);    // Only odd numbers
         gma.set_bit((2047-topcap) as u32,true);     // Lower bound on prime numbers
 
-        let result = prime_eh( &gma );
+        let mut askpri = Query::new(&gma);
+
+        if !tm {
+            askpri.set_flags(0);
+        }
+
+        let result = prime_eh( &askpri );
 
         if result.get_res() {
 
             println!("The prime is:\n{}\n\nfound at the {}th attempt",gma,k);
 
-            println!("It takes about...\n{:?} to run the primitive primality test,\n{:?} for the Fermat Little test,\n{:?} for the Miller Rabbin test",
-                        result.timings[0],
-                    result.timings[1],
-                result.timings[2]);
+            if tm {
+
+                println!("It takes about...\n{:?} to run the primitive primality test,\n{:?} for the Fermat Little test,\n{:?} for the Miller Rabbin test",
+                            result.timings[0],
+                        result.timings[1],
+                    result.timings[2]);
             
-            // println!("\nThe Number takes {} space in memory",mem::size_of_val(gma));
+            }
 
             break;
         }
@@ -54,47 +57,77 @@ fn main() {
 
 }
 
-fn prime_eh(n: &Int) -> Reply {
+fn prime_eh(inquiry: &Query) -> Reply {
     
+    let n = inquiry.get_int();
+
+    let tm = match inquiry.get_flags() {
+        0 => false,
+        1 => true,
+        _ => true
+    };
+
     let mr_rounds : u8 = 16;        // MILLER RABBIN ROUNDS
 
     let mut output = Reply::new(false);
 
-    let tic: Instant = Instant::now();
+    let t1 = if tm {
 
-    let t1: bool = primitive_primality_test(n).get_res();
+        let tic: Instant = Instant::now();
 
-    let toc: Duration = tic.elapsed();
+        let t1: bool = primitive_primality_test(n).get_res();
+
+        let toc: Duration = tic.elapsed();
+
+        output.push_that_time(&toc);
+
+        t1
+    } else {
+        primitive_primality_test(n).get_res()
+    };
 
     if !t1 {
         // out.set_res(false)
         return output;
     }
 
-    let tic2: Instant = Instant::now();
+    let t2 = if tm {
+        let tic2: Instant = Instant::now();
 
-    let t2: bool = fermat_little(n).get_res();
+        let t2: bool = fermat_little(n).get_res();
 
-    let toc2: Duration = tic2.elapsed();
+        let toc2: Duration = tic2.elapsed();
+
+        output.push_that_time(&toc2);
+
+        t2
+    } else {
+        fermat_little(n).get_res()
+    };
 
     if !t2 {
         return output;
     }
 
-    let tic3: Instant = Instant::now();
+    let t3 = if tm {
+        let tic3: Instant = Instant::now();
 
-    let t3: bool = miller_rabin( n, &mr_rounds ).get_res();
+        let t3: bool = miller_rabin( n, &mr_rounds ).get_res();
 
-    let toc3: Duration = tic3.elapsed();
+        let toc3: Duration = tic3.elapsed();
+
+        output.push_that_time(&toc3);
+
+        t3
+    } else {
+        miller_rabin( n, &mr_rounds ).get_res()
+    };
 
     if !t3 {
         return output;
     }
 
     output.set_res(true);
-    output.push_that_time(&toc);
-    output.push_that_time(&toc2);
-    output.push_that_time(&toc3);
 
     output
 }

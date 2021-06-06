@@ -15,6 +15,7 @@ macro_rules! time_it {
 */
 
 pub struct Query<'a> {
+
     theint : &'a Int,
     flagses : u8
 
@@ -40,7 +41,17 @@ impl<'a> Query<'a> {
         }
     }
 
+    pub fn get_int(&self) -> &Int {
+        self.theint
+    }
 
+    pub fn set_flags ( &mut self, new_flags : u8) {
+        self.flagses = new_flags;
+    }
+
+    pub fn get_flags (&self) -> &u8 {
+        &self.flagses
+    }
 }
 
 
