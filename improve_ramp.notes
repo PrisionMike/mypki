@@ -1,3 +1,0 @@
-if x == one || x == n - one {
-    |
-    = help: the trait `PartialEq<&Int>` is not implemented for `Int`
